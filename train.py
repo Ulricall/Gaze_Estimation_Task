@@ -1,10 +1,12 @@
+import sys
+import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim.lr_scheduler import StepLR
 from torchvision import transforms
 from torch.utils.data import DataLoader
 
-from utils import dataset, network, angle
+from utils import dataset, network, angle, log
 
 if __name__ == '__main__':
 
@@ -21,8 +23,8 @@ if __name__ == '__main__':
 
     data = []
     for i in range(10):
-        data_tmp = dataset.CustomImageDataset(annotations_file='../input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
-                                            img_dir='../input/gazeestimate/MPIIFaceGaze/Image',
+        data_tmp = dataset.CustomImageDataset(annotations_file='./input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
+                                            img_dir='./input/gazeestimate/MPIIFaceGaze/Image',
                                             transform=transform)
         data.append(data_tmp)
 
@@ -58,6 +60,8 @@ if __name__ == '__main__':
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
+    
+    sys.stdout = log.Log()
 
     model.eval()
     for loader in validation_loader:
