@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     data = []
     for i in range(10):
-        data_tmp = dataset.CustomImageDataset(annotations_file='./input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
+        data_tmp = dataset.GazeDataset(annotations_file='./input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
                                             img_dir='./input/gazeestimate/MPIIFaceGaze/Image',
                                             transform=transform)
         data.append(data_tmp)
@@ -37,7 +37,7 @@ if __name__ == '__main__':
             validation_loader.append(DataLoader(label, batch_size = 10, shuffle = True))
     #test_loader=DataLoader(testing_data,batch_size=64,shuffle=True
 
-    model = network.Net()
+    model = network.GazeNet()
     optimizer = optim.Adam(model.parameters(),lr = 0.1)
     #scheduler=stepLR(optimizer,step_size=lr_patience,gamma=lr_decay_factor)
     criterion = nn.L1Loss()
@@ -49,11 +49,13 @@ if __name__ == '__main__':
     for times in range(5):
         for loader in train_loader:
             for data, targets in loader:
-                images = data.cuda()
+                face = data[0].cuda()
+                left = data[1].cuda()
+                right = data[2].cuda()
                 targets = targets.cuda()
                 #print(targets)
                 #print(images.shape)
-                pred_gaze = model(images)
+                pred_gaze = model(face, left, right)
                 #print(pred_gaze)
                 loss = criterion(pred_gaze,targets)
                 print(loss)
@@ -66,7 +68,9 @@ if __name__ == '__main__':
     model.eval()
     for loader in validation_loader:
         for data, targets in loader:
-            images = data.cuda()
+            face = data[0].cuda()
+            left = data[1].cuda()
+            right = data[2].cuda()
             targets = targets.cuda()
-            pred_gaze = model(images)
+            pred_gaze = model(face, left, right)
             print(angle.angular_error(targets, pred_gaze))
