@@ -65,12 +65,12 @@ if __name__ == '__main__':
                 loss.backward()
                 optimizer.step()
     
-    sys.stdout = log.Log()
+    sys.stdout = log.Log(filename = 'outputs_1.txt')
 
     model.eval()
     print("Start validation......")
     for loader in tqdm(validation_loader, leave = False):
-        for data, targets in loader:
+        for data, targets in tqdm(loader, leave = False):
             face = data[0].cuda()
             left = data[1].cuda()
             right = data[2].cuda()

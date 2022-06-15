@@ -33,7 +33,7 @@ if __name__ == '__main__':
                                     transform = transform)
     
     train_loader = []
-    for i, label in enumerate(MPII_data):
+    for label in enumerate(MPII_data):
         train_loader.append(DataLoader(label, batch_size = 64, shuffle = True))
     
     test_loader = DataLoader(Columbia_data, batch_size = 64, shuffle = True)
@@ -47,28 +47,23 @@ if __name__ == '__main__':
     model.to(device)
     print(device)
     model.train()
-    for times in tqdm(range(5)):
-        for loader in tqdm(train_loader):
-            for data, targets in tqdm(loader):
+    for times in tqdm(range(5), leave = False):
+        for loader in tqdm(train_loader, leave = False):
+            for data, targets in loader:
                 img = data[0].cuda()
                 targets = targets.cuda()
                 pred_gaze = model(img)
                 loss = criterion(pred_gaze, targets)
-                #print(loss)
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-                pass
-            pass
-        pass
-    #sys.stdout = log.Log()
+    
+    sys.stdout = log.Log(filename = 'outputs_2.txt')
 
     model.eval()
-    for loader in tqdm(test_loader):
-        for data, targets in tqdm(loader):
+    for loader in tqdm(test_loader, leave = False):
+        for data, targets in loader:
             img = data.cuda()
             targets = targets.cuda()
             pred_gaze = model(img)
             print(angle.angular_error(targets, pred_gaze))
-            pass
-        pass
