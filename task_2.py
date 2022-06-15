@@ -2,6 +2,7 @@ import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from tqdm import tqdm
 from torch.optim.lr_scheduler import StepLR
 from torchvision import transforms
 from torch.utils.data import DataLoader
@@ -21,23 +22,23 @@ if __name__ == '__main__':
 
     target_transform = transforms.ToTensor()
 
-    data = []
+    MPII_data = []
     for i in range(10):
-        data_tmp = dataset.GazeDataset(annotations_file='./input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
-                                            img_dir='./input/gazeestimate/MPIIFaceGaze/Image',
-                                            transform=transform)
-        data.append(data_tmp)
-
+        data_tmp = dataset.MPII_Tran(annotations_file = './input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
+                                    img_dir = './input/gazeestimate/MPIIFaceGaze/Image',
+                                    transform = transform)
+        MPII_data.append(data_tmp)
+        
+    Columbia_data = dataset.Columbia(img_dir = './input/gazeestimate/Columbia_Gaze_Data_Set',
+                                    transform = transform)
+    
     train_loader = []
-    validation_loader = []
-    for i, label in enumerate(data):
-        if (i < 8):
-            train_loader.append(DataLoader(label, batch_size = 64, shuffle = True))
-        else:
-            validation_loader.append(DataLoader(label, batch_size = 10, shuffle = True))
-    #test_loader=DataLoader(testing_data,batch_size=64,shuffle=True
-
-    model = network.GazeNet()
+    for i, label in enumerate(MPII_data):
+        train_loader.append(DataLoader(label, batch_size = 64, shuffle = True))
+    
+    test_loader = DataLoader(Columbia_data, batch_size = 64, shuffle = True)
+    
+    model = network.TranGazeNet()
     optimizer = optim.Adam(model.parameters(),lr = 0.1)
     #scheduler=stepLR(optimizer,step_size=lr_patience,gamma=lr_decay_factor)
     criterion = nn.L1Loss()
@@ -46,31 +47,28 @@ if __name__ == '__main__':
     model.to(device)
     print(device)
     model.train()
-    for times in range(5):
-        for loader in train_loader:
-            for data, targets in loader:
-                face = data[0].cuda()
-                left = data[1].cuda()
-                right = data[2].cuda()
+    for times in tqdm(range(5)):
+        for loader in tqdm(train_loader):
+            for data, targets in tqdm(loader):
+                img = data[0].cuda()
                 targets = targets.cuda()
-                #print(targets)
-                #print(images.shape)
-                pred_gaze = model(face, left, right)
-                #print(pred_gaze)
-                loss = criterion(pred_gaze,targets)
-                print(loss)
+                pred_gaze = model(img)
+                loss = criterion(pred_gaze, targets)
+                #print(loss)
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-    
-    sys.stdout = log.Log()
+                pass
+            pass
+        pass
+    #sys.stdout = log.Log()
 
     model.eval()
-    for loader in validation_loader:
-        for data, targets in loader:
-            face = data[0].cuda()
-            left = data[1].cuda()
-            right = data[2].cuda()
+    for loader in tqdm(test_loader):
+        for data, targets in tqdm(loader):
+            img = data.cuda()
             targets = targets.cuda()
-            pred_gaze = model(face, left, right)
+            pred_gaze = model(img)
             print(angle.angular_error(targets, pred_gaze))
+            pass
+        pass

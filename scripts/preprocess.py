@@ -2,7 +2,7 @@ from PIL import Image
 import face_recognition
 import os
 
-images = open('list.txt','r')
+images = open('list.txt', 'r')
 
 for line in images:
     image = face_recognition.load_image_file(line.strip('\n'))
