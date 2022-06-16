@@ -59,8 +59,6 @@ class MPII_Tran(Dataset):
         sub_path = sub_path.replace("\\", "/")
         
         img_path = os.path.join(self.img_dir, sub_path)
-        print(img_path)
-        exit()
 
         image = read_image(img_path)
         if self.transform:

@@ -15,18 +15,15 @@ if __name__ == '__main__':
         transforms.ToPILImage(),
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        #transforms.Normalize(mean=[0.485,0.456,0.406],std=[0,229,0.224,0.225]),
-        #transforms.RandomApply([transforms.ColorJitter(0.4,0.4,0.4,0.1)],p=0.8),
-        #transforms.RandomGrayscale(p=0.2)
     ])
 
     target_transform = transforms.ToTensor()
 
     data = []
     for i in range(10):
-        data_tmp = dataset.MPII(annotations_file='./input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
-                                            img_dir='./input/gazeestimate/MPIIFaceGaze/Image',
-                                            transform=transform)
+        data_tmp = dataset.MPII(annotations_file = './input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
+                                img_dir = './input/gazeestimate/MPIIFaceGaze/Image',
+                                transform = transform)
         data.append(data_tmp)
     
     train_loader = []

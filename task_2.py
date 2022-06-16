@@ -15,9 +15,6 @@ if __name__ == '__main__':
         transforms.ToPILImage(),
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
-        #transforms.Normalize(mean=[0.485,0.456,0.406],std=[0,229,0.224,0.225]),
-        #transforms.RandomApply([transforms.ColorJitter(0.4,0.4,0.4,0.1)],p=0.8),
-        #transforms.RandomGrayscale(p=0.2)
     ])
 
     target_transform = transforms.ToTensor()
@@ -25,15 +22,15 @@ if __name__ == '__main__':
     MPII_data = []
     for i in range(10):
         data_tmp = dataset.MPII_Tran(annotations_file = './input/gazeestimate/MPIIFaceGaze/Label/p0{0}.label'.format(i),
-                                    img_dir = './input/gazeestimate/MPIIFaceGaze/Image',
-                                    transform = transform)
+                                img_dir = './input/gazeestimate/MPIIFaceGaze/Image',
+                                transform = transform)
         MPII_data.append(data_tmp)
         
     Columbia_data = dataset.Columbia(img_dir = './input/gazeestimate/Columbia_Gaze_Data_Set',
                                     transform = transform)
     
     train_loader = []
-    for label in enumerate(MPII_data):
+    for i, label in enumerate(MPII_data):
         train_loader.append(DataLoader(label, batch_size = 64, shuffle = True))
     
     test_loader = DataLoader(Columbia_data, batch_size = 64, shuffle = True)
