@@ -34,7 +34,7 @@ if __name__ == '__main__':
         train_loader.append(DataLoader(label, batch_size = 64, shuffle = True))
     
     test_loader = DataLoader(Columbia_data, batch_size = 64, shuffle = True)
-    
+
     model = network.TranGazeNet()
     optimizer = optim.Adam(model.parameters(),lr = 0.1)
     #scheduler=stepLR(optimizer,step_size=lr_patience,gamma=lr_decay_factor)
@@ -42,13 +42,14 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-    print(device)
+    print("Using {0} device".format(device))
+    
     model.train()
     for times in tqdm(range(5), leave = False):
-        for loader in tqdm(train_loader, leave = False):
-            for data, targets in loader:
-                img = data[0].cuda()
-                targets = targets.cuda()
+        for t_loader in tqdm(train_loader, leave = False):
+            for t_data, t_targets in t_loader:
+                img = t_data.cuda()
+                targets = t_targets.cuda()
                 pred_gaze = model(img)
                 loss = criterion(pred_gaze, targets)
                 optimizer.zero_grad()
@@ -56,11 +57,11 @@ if __name__ == '__main__':
                 optimizer.step()
     
     sys.stdout = log.Log(filename = 'outputs_2.txt')
-
+    
     model.eval()
-    for loader in tqdm(test_loader, leave = False):
-        for data, targets in loader:
-            img = data.cuda()
-            targets = targets.cuda()
-            pred_gaze = model(img)
-            print(angle.angular_error(targets, pred_gaze))
+    print("Start testing......")
+    for e_data, e_targets in tqdm(test_loader, leave = False):
+        img = e_data.cuda()
+        targets = e_targets.cuda()
+        pred_gaze = model(img)
+        print(angle.angular_error(targets, pred_gaze))

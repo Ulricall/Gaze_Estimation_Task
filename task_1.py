@@ -41,18 +41,18 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-    print(device)
+    print("Using {0} device".format(device))
     model.train()
     
     print("Start training......")
     for times in tqdm(range(5), leave = False):
         print("Training {0}".format(times + 1))
-        for loader in tqdm(train_loader, leave = False):
-            for data, targets in loader:
-                face = data[0].cuda()
-                left = data[1].cuda()
-                right = data[2].cuda()
-                targets = targets.cuda()
+        for t_loader in tqdm(train_loader, leave = False):
+            for t_data, t_targets in t_loader:
+                face = t_data[0].cuda()
+                left = t_data[1].cuda()
+                right = t_data[2].cuda()
+                targets = t_targets.cuda()
 
                 pred_gaze = model(face, left, right)
 
@@ -66,11 +66,11 @@ if __name__ == '__main__':
 
     model.eval()
     print("Start validation......")
-    for loader in tqdm(validation_loader, leave = False):
-        for data, targets in tqdm(loader, leave = False):
-            face = data[0].cuda()
-            left = data[1].cuda()
-            right = data[2].cuda()
-            targets = targets.cuda()
+    for v_loader in tqdm(validation_loader, leave = False):
+        for v_data, v_targets in v_loader:
+            face = v_data[0].cuda()
+            left = v_data[1].cuda()
+            right = v_data[2].cuda()
+            targets = v_targets.cuda()
             pred_gaze = model(face, left, right)
             print(angle.angular_error(targets, pred_gaze))
