@@ -20,8 +20,10 @@ if __name__ == '__main__':
             if (pic[0] != '0'): continue
             
             pic_split = pic.split("_")
-            V_label = str(float(pic_split[3].strip('V')) / 360 * (2*math.pi))
-            H_label = str(float(pic_split[4].strip('H.jpg')) / 360 * (2*math.pi))
+            V_label = str(math.sin(math.radians(float(pic_split[3].strip('V')))))
+            H_label = str(math.sin(math.radians(float(pic_split[4].strip('H.jpg')))))
+            #V_label = str(float(pic_split[3].strip('V')) / 360 * (2*math.pi))
+            #H_label = str(float(pic_split[4].strip('H.jpg')) / 360 * (2*math.pi))
             label = [os.path.join(folder, pic), H_label, V_label] 
 
             text.write(" ".join(label))

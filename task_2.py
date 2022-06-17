@@ -57,11 +57,11 @@ if __name__ == '__main__':
                 optimizer.step()
     
     sys.stdout = log.Log(filename = 'outputs_2.txt')
-    
+
     model.eval()
     print("Start testing......")
     for e_data, e_targets in tqdm(test_loader, leave = False):
         img = e_data.cuda()
         targets = e_targets.cuda()
         pred_gaze = model(img)
-        print(angle.angular_error(targets, pred_gaze))
+        print(angle.angular_error_2d(targets, pred_gaze))

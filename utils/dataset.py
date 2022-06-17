@@ -63,7 +63,7 @@ class MPII_Tran(Dataset):
         if self.transform:
             image = self.transform(image)
         
-        label = torch.tensor(list(map(float, self.img_labels.iloc[index, 7].split(','))))
+        label = torch.tensor(list(map(float, self.img_labels.iloc[index, 5].split(','))))
         
         return image, label
 

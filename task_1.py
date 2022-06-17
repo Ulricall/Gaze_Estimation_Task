@@ -73,4 +73,4 @@ if __name__ == '__main__':
             right = v_data[2].cuda()
             targets = v_targets.cuda()
             pred_gaze = model(face, left, right)
-            print(angle.angular_error(targets, pred_gaze))
+            print(angle.angular_error_3d(targets, pred_gaze))
