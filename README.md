@@ -9,6 +9,10 @@ Then run task_1.py, the code does both training and testing, and it will output 
 ## Task2: Gaze domain adaptation
 We calculate the gaze error between MPIIFaceGaze and ColumbiaGaze. 
 
+Put ColumbiaGazeDataSet into ./input
+
 Firstly, Use the work in https://github.com/ageitgey/face_recognition to preprocess the pictures in ColumbiaGaze to cut out faces from the pictures.
 
-Install face_recognition following the above github link, and then run getlist.py and preprocess.py to overwrite original pictures with cut pictures.
+Install face_recognition following the above github link, and then run scripts/getColumliaLabel.py and scripts/preprocess.py to get the label of ColumbiaGazeDataSet and overwrite original pictures with cut pictures.
+
+After that run 
