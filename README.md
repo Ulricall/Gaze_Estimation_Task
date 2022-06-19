@@ -1,7 +1,10 @@
 # Gaze Estimation
 A gaze estimation project for AI2612.
 
-## Gaze domain adaptation
+## Task1: Gaze Estimation
+
+
+## Task2: Gaze domain adaptation
 Generalize between MPIIFaceGaze and ColumbiaGaze. 
 
 Firstly, Use the work in https://github.com/ageitgey/face_recognition to preprocess the pictures in ColumbiaGaze to cut out faces from the pictures.
