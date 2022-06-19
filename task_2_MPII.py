@@ -2,6 +2,7 @@ import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
+
 from tqdm import tqdm
 from torch.optim.lr_scheduler import StepLR
 from torchvision import transforms
@@ -10,7 +11,6 @@ from torch.utils.data import DataLoader
 from utils import dataset, network, angle, log
 
 if __name__ == '__main__':
-
     transform = transforms.Compose([
         transforms.ToPILImage(),
         transforms.Resize((224, 224)),
