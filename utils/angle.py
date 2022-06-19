@@ -5,7 +5,7 @@ def change_dim(x):
     
     x_new = []
     for i in x:
-        i_new = [i[0], i[1]]
+        i_new = [i[0], i[2]]
         x_new.append(i_new)
     
     x_new = np.array(x_new)
