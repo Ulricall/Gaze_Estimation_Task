@@ -66,6 +66,30 @@ class MPII_Tran(Dataset):
         label = torch.tensor(list(map(float, self.img_labels.iloc[index, 5].split(','))))
         
         return image, label
+    
+class MPII_Tran_2(Dataset):
+    def __init__(self, annotations_file, img_dir, transform = None):
+        self.img_labels = pd.read_csv(annotations_file, encoding = 'utf-8', delimiter = ' ')
+        self.img_dir = img_dir
+        self.transform = transform
+    
+    def __len__(self):
+        return len(self.img_labels)
+
+    def __getitem__(self, index):
+        sub_path = self.img_labels.iloc[index, 0]
+        sub_path = sub_path.replace("\\", "/")
+        
+        img_path = os.path.join(self.img_dir, sub_path)
+
+        image = read_image(img_path)
+        if self.transform:
+            image = self.transform(image)
+        
+        label = torch.tensor(list(map(float, self.img_labels.iloc[index, 7].split(','))))
+        
+        return image, label
+
 
 class Columbia(Dataset):
     def __init__(self, img_dir, transform = None):

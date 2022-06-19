@@ -36,7 +36,7 @@ if __name__ == '__main__':
     test_loader = DataLoader(Columbia_data, batch_size = 64, shuffle = True)
 
     model = network.TranGazeNet()
-    optimizer = optim.Adam(model.parameters(),lr = 0.1)
+    optimizer = optim.Adam(model.parameters(),lr = 0.25)
     #scheduler=stepLR(optimizer,step_size=lr_patience,gamma=lr_decay_factor)
     criterion = nn.L1Loss()
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
                 loss.backward()
                 optimizer.step()
     
-    sys.stdout = log.Log(filename = 'outputs_2.txt')
+    sys.stdout = log.Log(filename = 'outputs_2_MPII.txt')
 
     model.eval()
     print("Start testing......")
