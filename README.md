@@ -7,7 +7,7 @@ Data preparation: put MPIIGazeDataset into ./input(which does not exist at the b
 Then run task_1.py, the code does both training and testing, and it will output output_1.txt, which is the result of testing on p10-p14.
 
 ## Task2: Gaze domain adaptation
-Generalize between MPIIFaceGaze and ColumbiaGaze. 
+We calculate the gaze error between MPIIFaceGaze and ColumbiaGaze. 
 
 Firstly, Use the work in https://github.com/ageitgey/face_recognition to preprocess the pictures in ColumbiaGaze to cut out faces from the pictures.
 
