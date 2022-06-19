@@ -15,4 +15,6 @@ Firstly, Use the work in https://github.com/ageitgey/face_recognition to preproc
 
 Install face_recognition following the above github link, and then run scripts/getlabelColumlia.py and scripts/preprocess.py to get the label of ColumbiaGazeDataSet and overwrite original pictures with cut pictures.
 
-After that run task2_MPII.py which trains on MPII and tests on Columbia and task2_Columbia.py which trains on Columbia and tests on MPII, the outputs are separately 
+After that run task2_MPII.py which trains on MPII and tests on Columbia and task2_Columbia.py which trains on Columbia and tests on MPII, the results are separately output_2_MPII.txt and output_2_Columbia.
+
+p.s. Run scripts/compute_average.py to get the average error for each output data.
